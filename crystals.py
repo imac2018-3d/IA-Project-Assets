@@ -63,6 +63,8 @@ class CrystalGenetic(GenericGenetic):
     def compute_individual(self, location):
         """Génère un cristal"""
 
+        bpy.context.scene.cursor_location = [0, 0, 0]
+
         bpy.ops.object.add(type='EMPTY')
         bpy.context.object.name = "Crystal" + str(GenericGenetic.bobject_unique_id())
         self.generated = bpy.context.object.name
