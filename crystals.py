@@ -41,20 +41,22 @@ class CrystalGenetic(GenericGenetic):
 
     def genotype_as_string(self):
         buf = io.StringIO()
-        for subcrystal in self.genotype:
-            buf.write("#[\ncuts: [\n")
+        buf.write("- Begin genotype (" + str(len(self.genotype)) + " subcrystals) -\n")
+        for idx, subcrystal in enumerate(self.genotype):
+            buf.write("#" + str(idx) + ": {\n\tcuts: [\n")
             for cut in subcrystal['cuts']:
-                buf.write("\t" + str(cut[0]) + " " + str(cut[1]) + " " + str(cut[2]) + "\n")
-            buf.write("]\nscale: "
+                buf.write("\t\t" + str(cut[0]) + " " + str(cut[1]) + " " + str(cut[2]) + "\n")
+            buf.write("\t]\n\tscale: "
                       + str(subcrystal['scale'][0]) + " "
                       + str(subcrystal['scale'][1]) + " "
                       + str(subcrystal['scale'][2])
                       + "\n")
-            buf.write("orientation: "
+            buf.write("\torientation: "
                       + str(subcrystal['orientation'][0]) + " "
                       + str(subcrystal['orientation'][1]) + "\n")
-            buf.write("offset: " + str(subcrystal['offset']) + "\n")
-        buf.write("]")
+            buf.write("\toffset: " + str(subcrystal['offset']) + "\n")
+            buf.write("}\n")
+        buf.write("- End genotype -")
 
         ret = buf.getvalue()
         buf.close()
@@ -127,8 +129,8 @@ class AssetsGenerator:
         bpydeleteall()
         self.genotypes = []
         self.genotypes.append(CrystalGenetic())
-        print(repr(self.genotypes[0]))
         self.genotypes[0].compute_individual((0, 0, 0))
+        print("#################################################")
         print(repr(self.genotypes[0]))
 
 
